@@ -3,9 +3,8 @@ variable "environment" {
 }
 
 variable "ami" {
-
+  description = "name of the ami to use (operationg system)"
 }
-
-variable "key_name" {
-  
+variable "public_subnets" {
+  type = list(string)
 }

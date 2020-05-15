@@ -1,14 +1,15 @@
-
+#input variables
 resource "aws_autoscaling_group" "bar" {
-  name                 = "foobar3-terraform-test"
+  name                 = "terraform-infrastructure-example"
   max_size             = 1
   min_size             = 1
   desired_capacity     = 1
-  launch_configuration = aws_launch_configuration.as_conf
-  vpc_zone_identifier  = ["subnet-REMPLAZA", "subnet-REMPLAZA"]
+  launch_configuration = aws_launch_configuration.as_conf.id
+  vpc_zone_identifier  = var.public_subnets
 
-  health_check_grace_period = 25
-  wait_for_capacity_timeout = "30s"
+  health_check_grace_period = 100
+  # This is not in the official
+  # wait_for_capacity_timeout = "5m"
 
   tag {
       key = "Name"
@@ -17,17 +18,15 @@ resource "aws_autoscaling_group" "bar" {
   }
 }
 
-
 resource "aws_launch_configuration" "as_conf" {
   name_prefix = "ubuntu"
-  image_id      = "${var.ami}"
+  image_id      = var.ami
   instance_type = "t2.micro"
 
   user_data = file("${path.module}/files/script.sh")
-
-  key_name = var.key_name
 
   lifecycle {
     create_before_destroy = true
   }
 }
+
