@@ -8,3 +8,9 @@ variable "ami" {
 variable "public_subnets" {
   type = list(string)
 }
+
+variable "key_name" {
+   type = string
+ }
+
+ variable "vpc_id" { }

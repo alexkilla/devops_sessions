@@ -18,12 +18,46 @@ resource "aws_autoscaling_group" "bar" {
   }
 }
 
+resource "aws_security_group" "sg_node_instance" {
+  name        = "${var.environment}-allow-internet-access-ssh"
+  description = "Allow connection from ssh"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["187.189.149.25/32"]
+  }
+
+  ingress {
+    from_port   = -1
+    to_port     = -1
+    protocol    = "icmp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name        = "${var.environment}-allow-elb-sg"
+    Environment = "${var.environment}"
+  }
+}
+
 resource "aws_launch_configuration" "as_conf" {
   name_prefix = "ubuntu"
   image_id      = var.ami
   instance_type = "t2.micro"
-
   user_data = file("${path.module}/files/script.sh")
+  associate_public_ip_address = true
+  key_name= var.key_name
+  security_groups= [aws_security_group.sg_node_instance.id]
 
   lifecycle {
     create_before_destroy = true
