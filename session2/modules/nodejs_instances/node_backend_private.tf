@@ -1,6 +1,6 @@
 #input variables
 resource "aws_autoscaling_group" "backend" {
-  name                 = "terraform-infrastructure-example"
+  name_prefix          = "terraform-infrastructure-example"
   max_size             = 1
   min_size             = 1
   desired_capacity     = 1
@@ -12,9 +12,9 @@ resource "aws_autoscaling_group" "backend" {
   # wait_for_capacity_timeout = "5m"
 
   tag {
-      key = "Name"
-      value = "${var.environment}-nodejs-instance"
-      propagate_at_launch = true
+    key                 = "Name"
+    value               = "${var.environment}-nodejs-instance"
+    propagate_at_launch = true
   }
 }
 
@@ -36,7 +36,7 @@ resource "aws_security_group" "sg_node_private_instance" {
     protocol    = "tcp"
     cidr_blocks = var.public_cidrs
   }
-  
+
   #ping
   ingress {
     from_port   = -1
@@ -50,7 +50,7 @@ resource "aws_security_group" "sg_node_private_instance" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
+}
 
   tags = {
     Name        = "${var.environment}-allow-elb-sg"
@@ -59,12 +59,12 @@ resource "aws_security_group" "sg_node_private_instance" {
 }
 
 resource "aws_launch_configuration" "as_conf_private" {
-  name_prefix = "ubuntu"
-  image_id      = var.ami
-  instance_type = "t2.micro"
-  user_data = file("${path.module}/files/script.sh")
-  key_name= var.key_name
-  security_groups= [aws_security_group.sg_node_private_instance.id]
+  name_prefix     = "ubuntu"
+  image_id        = var.ami
+  instance_type   = "t2.micro"
+  user_data       = file("${path.module}/files/script.sh")
+  key_name        = var.key_name
+  security_groups = [aws_security_group.sg_node_private_instance.id]
 
   lifecycle {
     create_before_destroy = true

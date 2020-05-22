@@ -1,6 +1,6 @@
 #input variables
 resource "aws_autoscaling_group" "frontend" {
-  name                 = "terraform-infrastructure-example"
+  name_prefix          = "terraform-infrastructure-example"
   max_size             = 1
   min_size             = 1
   desired_capacity     = 1
@@ -12,9 +12,9 @@ resource "aws_autoscaling_group" "frontend" {
   # wait_for_capacity_timeout = "5m"
 
   tag {
-      key = "Name"
-      value = "${var.environment}-nodejs-instance"
-      propagate_at_launch = true
+    key                 = "Name"
+    value               = "${var.environment}-nodejs-instance"
+    propagate_at_launch = true
   }
 }
 
@@ -51,13 +51,13 @@ resource "aws_security_group" "sg_node_instance" {
 }
 
 resource "aws_launch_configuration" "as_conf" {
-  name_prefix = "ubuntu"
-  image_id      = var.ami
-  instance_type = "t2.micro"
-  user_data = file("${path.module}/files/script.sh")
+  name_prefix                 = "ubuntu"
+  image_id                    = var.ami
+  instance_type               = "t2.micro"
+  user_data                   = file("${path.module}/files/script.sh")
   associate_public_ip_address = true
-  key_name= var.key_name
-  security_groups= [aws_security_group.sg_node_instance.id]
+  key_name                    = var.key_name
+  security_groups             = [aws_security_group.sg_node_instance.id]
 
   lifecycle {
     create_before_destroy = true

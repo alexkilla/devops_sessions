@@ -51,6 +51,8 @@ Advances on the devops classes project can be found here: https://github.com/ale
 
 - Open port 80, create node app and hit port 80. Add dockerfile and run node server in docker.
 
+---------------------------
+
 - Add ELB to the project. try classic load balancer.
 - Application load balancer vs classic load balancer.
 

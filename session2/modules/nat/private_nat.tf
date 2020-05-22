@@ -1,6 +1,6 @@
 resource "aws_nat_gateway" "private_nat" {
   allocation_id = element(aws_eip.nat_ip.*.id, count.index)
-  subnet_id= element(var.private_subnets, count.index)
+  subnet_id= element(var.public_subnets, count.index)
   count= length(var.public_subnets)
 }
 

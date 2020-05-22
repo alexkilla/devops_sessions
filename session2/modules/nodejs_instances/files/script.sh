@@ -1,12 +1,11 @@
 #!/bin/bash
-
 sudo apt-get update
+sudo apt-get install nodejs -y
 sudo su
+
 //Installs docker
 curl https://get.docker.com/ | bash
 sudo usermod -aG docker ubuntu
-docker 
-
 
 # // Get the instance info.   
 # instance_url=`curl -s http://169.254.169.254/latest/dynamic/instance-identity/document`
