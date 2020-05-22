@@ -1,11 +1,11 @@
 #input variables
-resource "aws_autoscaling_group" "frontend" {
+resource "aws_autoscaling_group" "backend" {
   name                 = "terraform-infrastructure-example"
   max_size             = 1
   min_size             = 1
   desired_capacity     = 1
-  launch_configuration = aws_launch_configuration.as_conf.id
-  vpc_zone_identifier  = var.public_subnets
+  launch_configuration = aws_launch_configuration.as_conf_private.id
+  vpc_zone_identifier  = var.private_subnets
 
   health_check_grace_period = 100
   # This is not in the official
@@ -18,23 +18,31 @@ resource "aws_autoscaling_group" "frontend" {
   }
 }
 
-resource "aws_security_group" "sg_node_instance" {
-  name        = "${var.environment}-allow-internet-access-ssh"
-  description = "Allow connection from ssh"
+resource "aws_security_group" "sg_node_private_instance" {
+  name        = "${var.environment}-allow-private"
+  description = "Allow connections from public subnet"
   vpc_id      = var.vpc_id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = var.public_cidrs
+  }
 
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["187.189.149.25/32"]
+    cidr_blocks = var.public_cidrs
   }
-
+  
+  #ping
   ingress {
     from_port   = -1
     to_port     = -1
     protocol    = "icmp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.public_cidrs
   }
 
   egress {
@@ -50,14 +58,13 @@ resource "aws_security_group" "sg_node_instance" {
   }
 }
 
-resource "aws_launch_configuration" "as_conf" {
+resource "aws_launch_configuration" "as_conf_private" {
   name_prefix = "ubuntu"
   image_id      = var.ami
   instance_type = "t2.micro"
   user_data = file("${path.module}/files/script.sh")
-  associate_public_ip_address = true
   key_name= var.key_name
-  security_groups= [aws_security_group.sg_node_instance.id]
+  security_groups= [aws_security_group.sg_node_private_instance.id]
 
   lifecycle {
     create_before_destroy = true

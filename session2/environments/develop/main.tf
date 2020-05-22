@@ -15,6 +15,7 @@ module "nat" {
   source= "../../modules/nat"
   vpc_id= "${module.networking.vpc}"
   public_subnets= "${module.networking.public_subnets}"
+  private_subnets= "${module.networking.private_subnets}"
 }
 
 module "node_instances" {
@@ -24,6 +25,9 @@ module "node_instances" {
   environment = "develop"
   ami = "${module.ami.ubuntu_ami}"
   public_subnets= "${module.networking.public_subnets}"
+  private_subnets= "${module.networking.private_subnets}"
+  private_cidrs= "${module.networking.private_cidrs}"
+  public_cidrs= "${module.networking.public_cidrs}"
 }
 
 
