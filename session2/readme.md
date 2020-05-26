@@ -1,27 +1,15 @@
-Tareas
-
-Crear o utilizar una vpc y subnet para poder levantar el ambiente ejemplo https://github.com/AxelMonroyX/nginx-custom-vpc-private-public-subnets/tree/master/modules/aws_vpc
-
-Crear en terraform o subir por la consola de aws la key pair
-
-Levantar las instancias utilizando 
-```
-cd environments/develop
-terraform init 
-terraform plan
-terraform apply
-```
+# Devops Sessions 
 
 # Questions
 
-EBs Volumes live inside the instance?
-elastic beanstalk for provisionning??
+- EBs Volumes live inside the instance?
 
-cual es la diferencia entre usar s3 bucket o el hdd en la instancia EBS? 
+- Cual es la diferencia entre usar s3 bucket o el hdd en la instancia EBS? 
 Elastic File storage (EFS) permite tener un hdd compartido por varias instancias.
 
-- what is a placement group?? 
-- how it connects to the auto scaling group??
+- What is a placement group??
+
+- How it connects to the auto scaling group??
 
 Devops concept - in place vs blue deployment
 
@@ -47,7 +35,7 @@ Advances on the devops classes project can be found here: https://github.com/ale
 
 # Homework session 4
 
-- Refactor subnets to export all the subnet instead of just the ids.
+- Refactor subnets to export all the subnet instead of just the ids. (Done)
 
 - Open port 80, create node app and hit port 80. Add dockerfile and run node server in docker.
 
@@ -58,10 +46,9 @@ Advances on the devops classes project can be found here: https://github.com/ale
 
 - (optional) investigate a bastion architecture. how it works and how you'd implement.
 
+# References
 
-
-
-
+https://github.com/AxelMonroyX/nginx-custom-vpc-private-public-subnets/tree/master/modules/aws_vpc
 
 
 
