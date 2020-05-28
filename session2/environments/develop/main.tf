@@ -11,13 +11,6 @@ module "networking" {
   source = "../../modules/networking"
 }
 
-module "nat" {
-  source= "../../modules/nat"
-  vpc_id= "${module.networking.vpc}"
-  public_subnets= "${module.networking.public_subnets}"
-  private_subnets= "${module.networking.private_subnets}"
-}
-
 module "node_instances" {
   key_name= "${aws_key_pair.access_key.id}"
   vpc_id= "${module.networking.vpc}"
@@ -26,7 +19,6 @@ module "node_instances" {
   ami = "${module.ami.ubuntu_ami}"
   public_subnets= "${module.networking.public_subnets}"
   private_subnets= "${module.networking.private_subnets}"
-  private_cidrs= "${module.networking.private_cidrs}"
   public_cidrs= "${module.networking.public_cidrs}"
 }
 

@@ -27,7 +27,7 @@ resource "aws_security_group" "sg_node_instance" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["187.189.149.25/32"]
+    cidr_blocks = ["189.203.137.107/32"]
   }
 
   ingress {
@@ -63,4 +63,3 @@ resource "aws_launch_configuration" "as_conf" {
     create_before_destroy = true
   }
 }
-

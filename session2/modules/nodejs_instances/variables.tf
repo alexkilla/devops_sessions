@@ -9,6 +9,10 @@ variable "public_subnets" {
   type = list(string)
 }
 
+variable "public_cidrs" {
+  type = list(string)
+}
+
 variable "private_subnets" {
   type = list(string)
 }
@@ -18,7 +22,3 @@ variable "key_name" {
  }
 
 variable "vpc_id" { }
-
-variable "private_cidrs" {}
-
-variable "public_cidrs" {}
